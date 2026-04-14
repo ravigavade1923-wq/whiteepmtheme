@@ -373,55 +373,59 @@ const testimonialsData = [
   },
 ];
 
-const useCountUp = (end, duration = 2000) => {
+const useCountUp = (end, duration = 2200, suffix = "", prefix = "") => {
   const [count, setCount] = useState(0);
-  const [startAnim, setStartAnim] = useState(false);
+  const [started, setStarted] = useState(false);
   const ref = useRef(null);
 
   useEffect(() => {
-    const currentRef = ref.current;
-    if (!currentRef) return;
+    const element = ref.current;
+    if (!element) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setStartAnim(true);
+          setStarted(true);
+          observer.unobserve(element);
         }
       },
-      { threshold: 0.4 },
+      { threshold: 0.45 },
     );
 
-    observer.observe(currentRef);
+    observer.observe(element);
+
     return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
-    if (!startAnim) return;
+    if (!started) return;
 
-    let start = 0;
-    const stepTime = 16;
-    const totalSteps = duration / stepTime;
-    const increment = end / totalSteps;
+    let startTime = null;
+    let animationFrame;
 
-    const timer = setInterval(() => {
-      start += increment;
+    const animate = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(eased * end));
 
-      if (start >= end) {
-        setCount(end);
-        clearInterval(timer);
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
       } else {
-        setCount(Math.floor(start));
+        setCount(end);
       }
-    }, stepTime);
+    };
 
-    return () => clearInterval(timer);
-  }, [startAnim, end, duration]);
+    animationFrame = requestAnimationFrame(animate);
 
-  return [count, ref];
+    return () => cancelAnimationFrame(animationFrame);
+  }, [started, end, duration]);
+
+  return [`${prefix}${count}${suffix}`, ref];
 };
 
 const Home = () => {
-  const lines = [
+  const heroLines = [
     "It all begins with you.",
     "Built around your goals and vision.",
     "Guiding wealth with clarity and purpose.",
@@ -432,15 +436,17 @@ const Home = () => {
   const heroVisualRef = useRef(null);
   const heroTitleRef = useRef(null);
   const heroCopyRef = useRef(null);
+  const heroContentRef = useRef(null);
 
-  const [textIndex, setTextIndex] = useState(0);
+  const [lineIndex, setLineIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const [aum, ref4] = useCountUp(150);
-  const [years, ref1] = useCountUp(30);
-  const [clients, ref2] = useCountUp(1000);
-  const [cities, ref3] = useCountUp(2);
+  const [experience, ref1] = useCountUp(30, 2000, "+");
+  const [clients, ref2] = useCountUp(1000, 2400, "+");
+  const [locations, ref3] = useCountUp(2, 1800);
+  const [aum, ref4] = useCountUp(150, 2400, " Cr", "₹");
 
   const featuredArticle = articles.find((item) => item.featured);
   const bottomArticles = articles.filter((item) => !item.featured);
@@ -468,28 +474,69 @@ const Home = () => {
     awardsData.find((item) => item.year === activeYear) || awardsData[0];
 
   useEffect(() => {
-    const currentText = lines[textIndex];
+    const currentLine = heroLines[lineIndex];
     let timeout;
 
-    if (!isDeleting && displayText.length < currentText.length) {
+    if (!isDeleting && charIndex < currentLine.length) {
       timeout = setTimeout(() => {
-        setDisplayText(currentText.slice(0, displayText.length + 1));
-      }, 70);
-    } else if (!isDeleting && displayText.length === currentText.length) {
+        setDisplayText(currentLine.slice(0, charIndex + 1));
+        setCharIndex((prev) => prev + 1);
+      }, 45);
+    } else if (!isDeleting && charIndex === currentLine.length) {
       timeout = setTimeout(() => {
         setIsDeleting(true);
-      }, 1400);
-    } else if (isDeleting && displayText.length > 0) {
+      }, 1600);
+    } else if (isDeleting && charIndex > 0) {
       timeout = setTimeout(() => {
-        setDisplayText(currentText.slice(0, displayText.length - 1));
-      }, 35);
-    } else if (isDeleting && displayText.length === 0) {
+        setDisplayText(currentLine.slice(0, charIndex - 1));
+        setCharIndex((prev) => prev - 1);
+      }, 22);
+    } else if (isDeleting && charIndex === 0) {
       setIsDeleting(false);
-      setTextIndex((prev) => (prev + 1) % lines.length);
+      setLineIndex((prev) => (prev + 1) % heroLines.length);
     }
 
     return () => clearTimeout(timeout);
-  }, [displayText, isDeleting, textIndex, lines]);
+  }, [charIndex, isDeleting, lineIndex, heroLines]);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const wrap = heroWrapRef.current;
+      const content = heroContentRef.current;
+      if (!wrap || !content) return;
+
+      const rect = wrap.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const rotateY = (x / rect.width - 0.5) * 10;
+      const rotateX = (y / rect.height - 0.5) * -8;
+
+      content.style.transform = `
+        translate3d(0, 0, 0)
+        rotateX(${rotateX}deg)
+        rotateY(${rotateY}deg)
+      `;
+    };
+
+    const resetTransform = () => {
+      const content = heroContentRef.current;
+      if (!content) return;
+      content.style.transform =
+        "translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg)";
+    };
+
+    const wrap = heroWrapRef.current;
+    if (!wrap) return;
+
+    wrap.addEventListener("mousemove", handleMouseMove);
+    wrap.addEventListener("mouseleave", resetTransform);
+
+    return () => {
+      wrap.removeEventListener("mousemove", handleMouseMove);
+      wrap.removeEventListener("mouseleave", resetTransform);
+    };
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -499,30 +546,6 @@ const Home = () => {
         { opacity: 1, y: 0, duration: 1.05, ease: "power3.out" },
       );
 
-      gsap.fromTo(
-        ".epm-floating-board, .epm-floating-mini",
-        { opacity: 0, y: 80, scale: 0.95 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1.05,
-          ease: "power3.out",
-          stagger: 0.14,
-          delay: 0.15,
-        },
-      );
-
-      gsap.to(heroVisualRef.current, {
-        yPercent: 10,
-        ease: "none",
-        scrollTrigger: {
-          trigger: heroWrapRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1.2,
-        },
-      });
 
       gsap.to(heroTitleRef.current, {
         yPercent: -12,
@@ -632,9 +655,8 @@ const Home = () => {
           ".testimonials-luxury-header h2",
           cardRef.current,
           quoteRef.current,
-          clientRowRef.current,
           dotsRef.current,
-        ],
+        ].filter(Boolean),
         {
           opacity: 0,
           y: 40,
@@ -675,15 +697,6 @@ const Home = () => {
         )
         .to(
           quoteRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-          },
-          "-=0.35",
-        )
-        .to(
-          clientRowRef.current,
           {
             opacity: 1,
             y: 0,
@@ -862,7 +875,7 @@ const Home = () => {
 
   return (
     <div ref={homeRef}>
-      <section className="epm-hero-wrap epm-animate" ref={heroWrapRef}>
+      <section className="epm-hero-wrap" ref={heroWrapRef} id="home">
         <div className="epm-social-stick">
           <a
             href="https://www.instagram.com/"
@@ -905,109 +918,101 @@ const Home = () => {
           </a>
         </div>
 
-        <div className="epm-hero-bg-layer"></div>
-        <div className="epm-hero-mesh"></div>
-        <div className="epm-hero-video-shade"></div>
+        <div className="epm-hero-crystal epm-crystal-one"></div>
+        <div className="epm-hero-crystal epm-crystal-two"></div>
+        <div className="epm-hero-crystal epm-crystal-three"></div>
+
         <div className="epm-hero-light epm-light-one"></div>
         <div className="epm-hero-light epm-light-two"></div>
-        <div className="epm-hero-orb epm-orb-one"></div>
-        <div className="epm-hero-orb epm-orb-two"></div>
-        <div className="epm-hero-orb epm-orb-three"></div>
+        <div className="epm-hero-light epm-light-three"></div>
+
+        <div className="epm-hero-grid-shine"></div>
+        <div className="epm-hero-noise"></div>
 
         <div className="epm-hero-shell">
-          <div className="epm-hero-grid">
-            <div className="epm-hero-left" ref={heroCopyRef}>
-              <div className="epm-hero-pill">
-                <span className="epm-pill-dot"></span>
-                <p>Because Your Wealth Deserves Excellence</p>
-              </div>
-
-              <div className="epm-hero-copy">
-                <span className="epm-hero-kicker">
-                  NEXT-GEN WEALTH STRATEGIES
-                </span>
-
-                <h1 className="epm-hero-title" ref={heroTitleRef}>
-                  <span className="epm-title-row epm-title-dark">BUILD</span>
-                  <span className="epm-title-row epm-title-accent">GROW</span>
-                  <span className="epm-title-row epm-title-dark">PROTECT</span>
-                </h1>
-
-                <div className="epm-type-lines">
-                  <div className="epm-typed-wrap">
-                    <p className="epm-typed-line">
-                      {displayText}
-                      <span className="epm-typed-caret"></span>
-                    </p>
-                  </div>
-
-                  <p className="epm-hero-desc">
-                    At EPM we believe your wealth goes beyond money. We
-                    prioritize you, your loved ones, and your business, ensuring
-                    they remain at the heart of our every action. Our
-                    personalized approach helps you achieve your goals today and
-                    in the future.
-                  </p>
-                </div>
-
-                <div className="epm-hero-btn-wrap">
-                  <Link
-                    to="/about"
-                    className="epm-liquid-btn epm-liquid-btn-gold"
-                  >
-                    <span className="epm-btn-text">DISCOVER MORE</span>
-                    <span className="epm-btn-icon">→</span>
-                    <span className="epm-btn-liquid"></span>
-                  </Link>
-
-                  <Link
-                    to="/contact"
-                    className="epm-liquid-btn epm-liquid-btn-glass"
-                  >
-                    <span className="epm-btn-text">START A CONVERSATION</span>
-                    <span className="epm-btn-icon">→</span>
-                    <span className="epm-btn-liquid"></span>
-                  </Link>
-                </div>
-
-                <div className="epm-scroll-indicator">
-                  <span className="epm-scroll-line"></span>
-                  <span className="epm-scroll-text">Scroll to explore</span>
-                </div>
-              </div>
+          <div className="epm-hero-content" ref={heroCopyRef}>
+            <div className="epm-hero-pill">
+              <span className="epm-pill-dot"></span>
+              <span className="epm-pill-text">
+            NEXT-GEN WEALTH STRATEGIES
+              </span>
             </div>
 
-            <div className="epm-hero-right" ref={heroVisualRef}>
-              <div className="epm-floating-board epm-board-main">
-                <div className="epm-board-top">
-                  <span className="epm-board-tag">EPM WEALTH</span>
-                  <span className="epm-board-dot"></span>
-                </div>
+            {/* <span className="epm-hero-kicker">NEXT-GEN WEALTH STRATEGIES</span> */}
 
-                <h3>Helping you create an enduring legacy</h3>
-                <p>
-                  Tailored wealth planning, premium insights, and a more refined
-                  financial decision-making experience.
-                </p>
+            <h1 className="epm-hero-title" ref={heroTitleRef}>
+              <span className="epm-title-main">Build Wealth</span>
+              <span className="epm-title-sub">
+                “Smart Strategies. Strong Future.”
+              </span>
+            </h1>
 
-                <div className="epm-board-stats">
-                  <div className="epm-board-stat" ref={ref4}>
-                    <strong>{aum}+</strong>
-                    <span>AUM</span>
-                  </div>
-                  <div className="epm-board-stat" ref={ref1}>
-                    <strong>{years}+</strong>
-                    <span>Years</span>
-                  </div>
-                  <div className="epm-board-stat" ref={ref2}>
-                    <strong>{clients}+</strong>
-                    <span>Clients</span>
-                  </div>
-                  <div className="epm-board-stat" ref={ref3}>
-                    <strong>{cities}+</strong>
-                    <span>Cities</span>
-                  </div>
-                </div>
+            <div className="epm-typed-wrap">
+              <p className="epm-typed-line">
+                {displayText}
+                <span className="epm-typed-caret"></span>
+              </p>
+            </div>
+
+            <p className="epm-hero-desc">
+              At EPM Wealth, we bring clarity, discipline, and intelligent
+              planning to every financial decision. We craft a refined strategy
+              around your personal goals, family priorities, and long-term
+              legacy.
+            </p>
+
+            <div className="epm-hero-btn-wrap">
+              <Link to="/about" className="epm-liquid-btn epm-liquid-btn-gold">
+                <span className="epm-btn-text">DISCOVER MORE</span>
+                <span className="epm-btn-icon">→</span>
+                <span className="epm-btn-liquid"></span>
+              </Link>
+
+              <Link
+                to="/contact"
+                className="epm-liquid-btn epm-liquid-btn-glass"
+              >
+                <span className="epm-btn-text">START A CONVERSATION</span>
+                <span className="epm-btn-icon">→</span>
+                <span className="epm-btn-liquid"></span>
+              </Link>
+            </div>
+
+            {/* <div className="epm-scroll-indicator">
+            <span className="epm-scroll-line"></span>
+            <span className="epm-scroll-text">Scroll to explore</span>
+          </div> */}
+          </div>
+        </div>
+      </section>
+
+      <section className="epm-stats-section">
+        <div className="epm-stats-wrap">
+          <div className="epm-stats-card">
+            <div className="epm-stats-grid">
+              <div className="epm-stat-box" ref={ref4}>
+                <h2>{aum}</h2>
+                <p>AUM</p>
+              </div>
+
+              <div className="epm-stat-line"></div>
+
+              <div className="epm-stat-box" ref={ref1}>
+                <h2>{experience}</h2>
+                <p>Combined Team Experience</p>
+              </div>
+              <div className="epm-stat-line"></div>
+
+              <div className="epm-stat-box" ref={ref2}>
+                <h2>{clients}</h2>
+                <p>Unique Clients Served</p>
+              </div>
+
+              <div className="epm-stat-line"></div>
+
+              <div className="epm-stat-box" ref={ref3}>
+                <h2>{locations}</h2>
+                <p>Strategic Global Locations</p>
               </div>
             </div>
           </div>
@@ -1019,9 +1024,7 @@ const Home = () => {
           <div className="solutions-left">
             {/* <span className="solutions-label">SOLUTIONS</span> */}
             <h2>
-              Helping you create an
-              <br />
-              enduring legacy
+          Because Your Wealth Deserves Excellence
             </h2>
             <Link to="/contact" className="solutions-link">
               START THE CONVERSATION <span>→</span>
@@ -1044,7 +1047,6 @@ const Home = () => {
               through every important decision, ensuring clarity, confidence,
               and long-term financial growth.
             </p>
-         
           </div>
         </div>
       </section>
@@ -1053,7 +1055,7 @@ const Home = () => {
         <div className="decision-container">
           <div className="decision-top-row">
             <div className="decision-heading-wrap">
-              <span className="decision-mini-label">SERVICES</span>
+              {/* <span className="decision-mini-label">SERVICES</span> */}
               <h2 className="decision-heading">
                 Financial Decisions Made Simpler For Every Indian
               </h2>
@@ -1099,7 +1101,7 @@ const Home = () => {
         <div className="vault-container">
           <div className="vault-top-grid">
             <div className="vault-left-panel">
-              <span className="vault-label">VAULT</span>
+              {/* <span className="vault-label">VAULT</span> */}
 
               <h2 className="vault-heading">
                 Your access to
