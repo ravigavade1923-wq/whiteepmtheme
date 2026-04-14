@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./Home.css";
 
 import { gsap } from "gsap";
-
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import emailjs from "@emailjs/browser";
 import {
   FaInstagram,
@@ -12,17 +12,15 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-import customizeImg from "../../assets/home/customize.png";
-import technicalImg from "../../assets/home/technical.png";
-import transperenImg from "../../assets/home/transperen.png";
-import dataImg from "../../assets/home/data.png";
-import Navbar from "../navbar/Navbar";
+import featuresImg from "../../assets/feature/features.png";
+import featureImg from "../../assets/feature/feature.png";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const features = [
   {
     id: 1,
-    bgImage:
-      "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1200&auto=format&fit=crop",
+    bgImage: featuresImg,
     title: "Customized For You",
     description: "Easy and simple to understand tailor-made solutions for you",
     meta: "PERSONALISED SOLUTIONS",
@@ -45,8 +43,7 @@ const features = [
   },
   {
     id: 4,
-    bgImage:
-      "https://i.pinimg.com/1200x/7e/21/57/7e21579b68aa0406cd85ea6bc89852b2.jpg",
+    bgImage: featureImg,
     title: "Data-Driven",
     description: "Powered by return, guided by data",
     meta: "SMART ANALYTICS",
@@ -104,114 +101,158 @@ const articles = [
 
 const awardsData = [
   {
-    year: "2026",
-    title: "Tanish Gupta — Forbes 50 over 50",
-    brand: "FORBES GLOBAL",
-    badge: "🏆",
-    brandImage:
-      "https://images.openai.com/static-rsc-4/ND1U9Sy-VM1cQOvat5sETu9QZJTRrpCy1W0stzrXqryjiPXYBlbY1tnoADqkTqC-yVUiKrY0GMh8EgASUKjzPrp2R51i0kgxKa-HF088fkArYYgqquBxrqpHJ32TpxevnZT2w5LKVIH4_Qje7eRug_-2IEsf153gdlIOLhF8qyn9iDakLJ3PbviJCt8EqfPE?purpose=fullsize",
-    subtitle:
-      "Our awards are a matter of great pride for us. Recognition is natural when our services and processes have added significant value to our clients' lives and businesses.",
-  },
-  {
-    year: "2025",
-    title: "ET Best Wealth Management Firms",
-    brand: "ECONOMIC TIMES",
-    badge: "🥇",
-    brandImage:
-      "https://images.openai.com/static-rsc-4/I2er9fcvBgBl97dQN-d5hn4MsxWOHSTrxGKOzWTxbIWENxDGgTq8dwvwDJCaZvkEYQnfkBGUfgsX-okNTufefR0xCfliBeXp69kQbn00cQb16uZwFOc-215XwzjqvoHK8g-YDKwdrGBr0qi7YVZRqt_pQjLfbVvdAR4VKNpLzL1Yb3LYMsYC235Iv_EVo5RB?purpose=fullsize",
-    subtitle:
-      "Our awards are a matter of great pride for us. Recognition is natural when our services and processes have added significant value to our clients' lives and businesses.",
-  },
-  {
-    year: "2024",
-    title: "CNBCTV18 Wealth Excellence Award",
-    brand: "CNBCTV18",
-    badge: "💎",
-    brandImage:
-      "https://images.openai.com/static-rsc-4/s1wMGULdyZk4luITS89SF3RxfnQ8UWo5Rwq0ez6H8sJ1QhVWB_M2hiVsjQoKxgXqgNTYyDOx353c6q9yF2WJPAyJ5ru0FaVU2eGHJkZKfoA3-xvMYzLPL6g_11xcbPESRLZk-VpUBR8915ii_KC4IoQdMKeixhleAPTACFIDwK3rwpZN61GocjYwfyAUlu11?purpose=fullsize",
-    subtitle:
-      "Our awards are a matter of great pride for us. Recognition is natural when our services and processes have added significant value to our clients' lives and businesses.",
-  },
-  {
-    year: "2023",
-    title: "Business Standard Elite Partner",
-    brand: "BUSINESS STANDARD",
-    badge: "🏆",
-    brandImage:
-      "https://i.pinimg.com/736x/5a/31/a8/5a31a851279a2579b93a6568c4ebe46e.jpg",
-    subtitle:
-      "Our awards are a matter of great pride for us. Recognition is natural when our services and processes have added significant value to our clients' lives and businesses.",
-  },
-  {
-    year: "2022",
-    title: "Mint Best Wealth Advisory Firm",
-    brand: "MINT",
-    badge: "🥇",
-    brandImage:
-      "https://i.pinimg.com/736x/c3/aa/65/c3aa65380e715d04e60b2eac4551a18d.jpg",
-    subtitle:
-      "Our awards are a matter of great pride for us. Recognition is natural when our services and processes have added significant value to our clients' lives and businesses.",
-  },
-  {
-    year: "2021",
-    title: "Outlook Money Best Wealth Manager",
-    brand: "OUTLOOK MONEY",
+    year: "2016",
+    title: "Moneycontrol Emerging Wealth Award",
+    brand: "MONEYCONTROL",
     badge: "🏅",
-    brandImage:
-      "https://images.openai.com/static-rsc-4/4g69hb_jR7Yu3t-UcfeqMi1pWkCSO6-OhJ4qjYCwWsV44pFQ_zyMgq64p07A4WO291JNonL0vfPjODJOr9fMB-43ZBuknzje31K049TcIeLDmoXpqhqq5KlsUYvPaELYECnJHSeFrn3fVFY-g261apk8Bs85NqzhSITl4RvZJzFWqhXIfannz6rFZ1chpZZQ?purpose=inline",
     subtitle:
-      "Our awards are a matter of great pride for us. Recognition is natural when our services and processes have added significant value to our clients' lives and businesses.",
-  },
-  {
-    year: "2020",
-    title: "Financial Express Wealth Leadership Honour",
-    brand: "FINANCIAL EXPRESS",
-    badge: "⭐",
-    brandImage:
-      "https://images.openai.com/static-rsc-4/Js72B_FTNHjrceNSHUvPDCBlYXkOBixQOGKGOtyDdhnxTG2ilOcv3Up_VSaZ2d9t94HQm6qMEK2rPHvTvUqFUJKSErnretdYmAo2KT6htHWm49AYAziuZ3evftBqbTm-uX1TuiXOu_BPc55OaRjzqroQ0afk3_71U6RaOKxXcI8-zgFYPgpn84sF7MBbhe7w?purpose=fullsize",
-    subtitle:
-      "Our awards are a matter of great pride for us. Recognition is natural when our services and processes have added significant value to our clients' lives and businesses.",
-  },
-  {
-    year: "2019",
-    title: "ET Wealth Investment Excellence",
-    brand: "ECONOMIC TIMES",
-    badge: "🎗️",
-    brandImage:
-      "https://lh3.googleusercontent.com/p/AF1QipO6y70RCkvFOgjVOiSwa8lh52dWG0Gy2Y1EnbMm=s1360-w1360-h1020-rw",
-    subtitle:
-      "Our awards are a matter of great pride for us. Recognition is natural when our services and processes have added significant value to our clients' lives and businesses.",
-  },
-  {
-    year: "2018",
-    title: "Bloomberg Wealth Strategy Recognition",
-    brand: "BLOOMBERG",
-    badge: "🏆",
-    brandImage:
-      "https://lh3.googleusercontent.com/gps-cs-s/APNQkAEacS0_nYixjjgbWNTR3J6-xfm77PczqpRO8W9CT6HTNJ7EIWP1s8g8Nj4FmBPJA-xlwQi7CHy4ERTizi2tGFT2O5UiJMofgWvLs5pxNPp8CBYNmSomLd31aEzFSVwxfETouv667w=s1360-w1360-h1020-rw",
-    subtitle:
-      "Our awards are a matter of great pride for us. Recognition is natural when our services and processes have added significant value to our clients' lives and businesses.",
+      "Our journey began with a strong advisory foundation built on trust, consistency, and personalized wealth planning.",
+    works: [
+      "Established the foundation of a client-first wealth advisory model",
+      "Built strong investor trust through transparent financial guidance",
+      "Introduced personalized portfolio planning for long-term growth",
+      "Created structured service standards for relationship-driven advisory",
+    ],
   },
   {
     year: "2017",
     title: "Business Today Advisory Excellence",
     brand: "BUSINESS TODAY",
     badge: "🥇",
-    brandImage:
-      "https://lh3.googleusercontent.com/gps-cs-s/APNQkAGiym3nGeCRmkQSvEFUz7J4MWCvLhTUsyCSHScGQNuuiTK-_87Tp04rLzM8bW6XY6-jmvLc8vXrOQroTcnSp8OWtQzd7cpY6hFiiA6p3XRxB3rfoT6dHtmRBhS01NrMJicVXt2K=s1360-w1360-h1020-rw",
     subtitle:
-      "Our awards are a matter of great pride for us. Recognition is natural when our services and processes have added significant value to our clients' lives and businesses.",
+      "We strengthened our advisory framework and began scaling a more disciplined and refined client experience.",
+    works: [
+      "Expanded advisory reach with a more process-driven service model",
+      "Improved portfolio review and reporting experience for clients",
+      "Strengthened client communication and service responsiveness",
+      "Built a more disciplined and premium financial planning workflow",
+    ],
   },
   {
-    year: "2016",
-    title: "Moneycontrol Emerging Wealth Award",
-    brand: "MONEYCONTROL",
-    badge: "🏅",
-    brandImage:
-      "https://lh3.googleusercontent.com/p/AF1QipPERNQuOznfKMFHXExsiJwRda63tG5xdei98ZCc=s1360-w1360-h1020-rw",
+    year: "2018",
+    title: "Bloomberg Wealth Strategy Recognition",
+    brand: "BLOOMBERG",
+    badge: "🏆",
     subtitle:
-      "Our awards are a matter of great pride for us. Recognition is natural when our services and processes have added significant value to our clients' lives and businesses.",
+      "This phase reflected our growing focus on structured wealth strategies and high-quality investment planning.",
+    works: [
+      "Enhanced wealth strategy execution with sharper investment frameworks",
+      "Improved diversification planning across client portfolios",
+      "Strengthened research-backed decision making in advisory",
+      "Elevated consistency in long-term financial planning support",
+    ],
+  },
+  {
+    year: "2019",
+    title: "ET Wealth Investment Excellence",
+    brand: "ECONOMIC TIMES",
+    badge: "🎗️",
+    subtitle:
+      "A landmark year where our investment planning philosophy gained stronger recognition and credibility.",
+    works: [
+      "Improved investor confidence through clearer wealth roadmaps",
+      "Refined long-term planning strategies for better portfolio alignment",
+      "Built stronger advisory consistency across client relationships",
+      "Expanded trust-led wealth support with disciplined execution",
+    ],
+  },
+  {
+    year: "2020",
+    title: "Financial Express Wealth Leadership Honour",
+    brand: "FINANCIAL EXPRESS",
+    badge: "⭐",
+    subtitle:
+      "We adapted with resilience and strengthened our leadership in wealth management through stability and service quality.",
+    works: [
+      "Maintained strong advisory continuity during uncertain market conditions",
+      "Improved financial communication and client reassurance systems",
+      "Strengthened leadership positioning through disciplined service delivery",
+      "Focused on protection, planning, and long-term financial confidence",
+    ],
+  },
+  {
+    year: "2021",
+    title: "Outlook Money Best Wealth Manager",
+    brand: "OUTLOOK MONEY",
+    badge: "🏅",
+    subtitle:
+      "This year reflected stronger brand credibility, deeper relationships, and a more mature planning ecosystem.",
+    works: [
+      "Scaled a stronger relationship-based wealth advisory model",
+      "Enhanced investor education and confidence-building initiatives",
+      "Improved client retention through high-touch premium servicing",
+      "Strengthened brand trust with a more mature advisory ecosystem",
+    ],
+  },
+  {
+    year: "2022",
+    title: "Mint Best Wealth Advisory Firm",
+    brand: "MINT",
+    badge: "🥇",
+    subtitle:
+      "A year of high-impact execution where our planning quality and service depth stood out meaningfully.",
+    works: [
+      "Refined premium advisory delivery for a better client journey",
+      "Improved review systems and wealth tracking clarity",
+      "Expanded the firm’s planning depth with stronger operational structure",
+      "Delivered consistent value through focused wealth guidance",
+    ],
+  },
+  {
+    year: "2023",
+    title: "Business Standard Elite Partner",
+    brand: "BUSINESS STANDARD",
+    badge: "🏆",
+    subtitle:
+      "We continued to elevate our premium positioning with stronger planning quality and trusted execution.",
+    works: [
+      "Expanded premium wealth planning capabilities for growing clients",
+      "Improved internal advisory processes for more consistent delivery",
+      "Strengthened long-term portfolio alignment and service quality",
+      "Positioned the brand with greater elite-market credibility",
+    ],
+  },
+  {
+    year: "2024",
+    title: "CNBCTV18 Wealth Excellence Award",
+    brand: "CNBCTV18",
+    badge: "💎",
+    subtitle:
+      "This phase reflected operational refinement, stronger outcomes, and a more elevated advisory presence.",
+    works: [
+      "Strengthened high-value client experience with refined servicing",
+      "Improved wealth execution quality through sharper strategy alignment",
+      "Enhanced brand authority with more visible financial leadership",
+      "Built a stronger premium advisory ecosystem for future scale",
+    ],
+  },
+  {
+    year: "2025",
+    title: "ET Best Wealth Management Firms",
+    brand: "ECONOMIC TIMES",
+    badge: "🥇",
+    subtitle:
+      "A year focused on expansion, operational strength, and the continued pursuit of measurable excellence.",
+    works: [
+      "Expanded wealth management reach across a broader client base",
+      "Improved service operations for a smoother advisory experience",
+      "Strengthened trust through better reporting and review structure",
+      "Elevated overall planning quality with a premium execution model",
+    ],
+  },
+  {
+    year: "2026",
+    title: "Tanish Gupta — Forbes 50 over 50",
+    brand: "FORBES GLOBAL",
+    badge: "🏆",
+    subtitle:
+      "A defining milestone showcasing the firm’s sustained excellence, trusted leadership, and premium advisory impact.",
+    works: [
+      "Achieved high-impact recognition on a global credibility platform",
+      "Strengthened leadership identity in the premium wealth segment",
+      "Showcased long-term consistency in trust-led advisory excellence",
+      "Reinforced the firm’s premium positioning through visible achievement",
+    ],
   },
 ];
 
@@ -266,21 +307,6 @@ const coreValuesData = [
       "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=900&q=80&auto=format&fit=crop",
   },
 ];
-
-const responsibleInvestingData = {
-  label: "RESPONSIBLE INVESTING",
-  heading: `Our
-responsible
-vision for a
-better &
-brighter
-future`,
-  description:
-    "As capital allocators, we recognize the impact of our investment advice on the world around us. We are committed to enabling our clients to allocate their capital in a manner that fully optimises opportunities and minimizes risks to environmental, social, and governance (ESG) factors.",
-  buttonText: "EXPLORE ESG",
-  image:
-    "https://i.pinimg.com/736x/63/9e/e3/639ee35bff684daae04742635936bb72.jpg",
-};
 
 const testimonialsData = [
   {
@@ -347,7 +373,6 @@ const testimonialsData = [
   },
 ];
 
-/* Count Up Hook */
 const useCountUp = (end, duration = 2000) => {
   const [count, setCount] = useState(0);
   const [startAnim, setStartAnim] = useState(false);
@@ -367,7 +392,6 @@ const useCountUp = (end, duration = 2000) => {
     );
 
     observer.observe(currentRef);
-
     return () => observer.disconnect();
   }, []);
 
@@ -397,6 +421,22 @@ const useCountUp = (end, duration = 2000) => {
 };
 
 const Home = () => {
+  const lines = [
+    "It all begins with you.",
+    "Built around your goals and vision.",
+    "Guiding wealth with clarity and purpose.",
+  ];
+
+  const homeRef = useRef(null);
+  const heroWrapRef = useRef(null);
+  const heroVisualRef = useRef(null);
+  const heroTitleRef = useRef(null);
+  const heroCopyRef = useRef(null);
+
+  const [textIndex, setTextIndex] = useState(0);
+  const [displayText, setDisplayText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const [aum, ref4] = useCountUp(150);
   const [years, ref1] = useCountUp(30);
   const [clients, ref2] = useCountUp(1000);
@@ -410,10 +450,6 @@ const Home = () => {
   const [message, setMessage] = useState("");
 
   const [activeYear, setActiveYear] = useState("2022");
-  const [counts, setCounts] = useState([0, 0, 0]);
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const statsRef = useRef(null);
-
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const currentTestimonial = testimonialsData[activeTestimonial];
 
@@ -432,47 +468,151 @@ const Home = () => {
     awardsData.find((item) => item.year === activeYear) || awardsData[0];
 
   useEffect(() => {
-    const section = statsRef.current;
-    if (!section || hasAnimated) return;
+    const currentText = lines[textIndex];
+    let timeout;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setHasAnimated(true);
+    if (!isDeleting && displayText.length < currentText.length) {
+      timeout = setTimeout(() => {
+        setDisplayText(currentText.slice(0, displayText.length + 1));
+      }, 70);
+    } else if (!isDeleting && displayText.length === currentText.length) {
+      timeout = setTimeout(() => {
+        setIsDeleting(true);
+      }, 1400);
+    } else if (isDeleting && displayText.length > 0) {
+      timeout = setTimeout(() => {
+        setDisplayText(currentText.slice(0, displayText.length - 1));
+      }, 35);
+    } else if (isDeleting && displayText.length === 0) {
+      setIsDeleting(false);
+      setTextIndex((prev) => (prev + 1) % lines.length);
+    }
 
-          statsData.forEach((stat, index) => {
-            let start = 0;
-            const duration = 1800;
-            const incrementTime = 20;
-            const totalSteps = duration / incrementTime;
-            const increment = stat.end / totalSteps;
+    return () => clearTimeout(timeout);
+  }, [displayText, isDeleting, textIndex, lines]);
 
-            const counter = setInterval(() => {
-              start += increment;
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        heroCopyRef.current,
+        { opacity: 0, y: 70 },
+        { opacity: 1, y: 0, duration: 1.05, ease: "power3.out" },
+      );
 
-              setCounts((prev) => {
-                const updated = [...prev];
-                updated[index] =
-                  start >= stat.end ? stat.end : Math.floor(start);
-                return updated;
-              });
+      gsap.fromTo(
+        ".epm-floating-board, .epm-floating-mini",
+        { opacity: 0, y: 80, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1.05,
+          ease: "power3.out",
+          stagger: 0.14,
+          delay: 0.15,
+        },
+      );
 
-              if (start >= stat.end) {
-                clearInterval(counter);
-              }
-            }, incrementTime);
-          });
+      gsap.to(heroVisualRef.current, {
+        yPercent: 10,
+        ease: "none",
+        scrollTrigger: {
+          trigger: heroWrapRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1.2,
+        },
+      });
 
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.35 },
-    );
+      gsap.to(heroTitleRef.current, {
+        yPercent: -12,
+        ease: "none",
+        scrollTrigger: {
+          trigger: heroWrapRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
 
-    observer.observe(section);
+      gsap.utils.toArray(".epm-reveal-section").forEach((section) => {
+        gsap.fromTo(
+          section,
+          { opacity: 0, y: 80 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 82%",
+              once: true,
+            },
+          },
+        );
+      });
 
-    return () => observer.disconnect();
-  }, [hasAnimated]);
+      gsap.utils.toArray(".decision-card").forEach((card, index) => {
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 60 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.85,
+            delay: index * 0.08,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: ".decision-grid",
+              start: "top 80%",
+              once: true,
+            },
+          },
+        );
+      });
+
+      gsap.utils.toArray(".vault-article-card").forEach((card, index) => {
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            delay: index * 0.08,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: ".vault-bottom-grid",
+              start: "top 82%",
+              once: true,
+            },
+          },
+        );
+      });
+
+      gsap.utils.toArray(".core-value-card").forEach((card, index) => {
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 60 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.85,
+            delay: index * 0.08,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: ".core-values-grid",
+              start: "top 82%",
+              once: true,
+            },
+          },
+        );
+      });
+    }, homeRef);
+
+    return () => ctx.revert();
+  }, []);
 
   useEffect(() => {
     autoSlideRef.current = setInterval(() => {
@@ -483,6 +623,7 @@ const Home = () => {
 
     return () => clearInterval(autoSlideRef.current);
   }, []);
+
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.set(
@@ -500,7 +641,14 @@ const Home = () => {
         },
       );
 
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out" },
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 78%",
+          once: true,
+        },
+      });
 
       tl.to(".testimonials-mini-label", {
         opacity: 1,
@@ -552,7 +700,7 @@ const Home = () => {
           },
           "-=0.3",
         );
-    }, sectionRef);
+    }, homeRef);
 
     return () => ctx.revert();
   }, []);
@@ -575,6 +723,29 @@ const Home = () => {
 
     return () => tl.kill();
   }, [activeTestimonial]);
+
+  useEffect(() => {
+    const sections = document.querySelectorAll(".epm-animate");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("epm-show");
+          } else {
+            entry.target.classList.remove("epm-show"); // 🔥 important for re-trigger
+          }
+        });
+      },
+      {
+        threshold: 0.2,
+      },
+    );
+
+    sections.forEach((sec) => observer.observe(sec));
+
+    return () => observer.disconnect();
+  }, []);
 
   const resetAutoSlide = () => {
     clearInterval(autoSlideRef.current);
@@ -599,8 +770,8 @@ const Home = () => {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    const rotateY = (x / rect.width - 0.5) * 14;
-    const rotateX = (y / rect.height - 0.5) * -14;
+    const rotateY = (x / rect.width - 0.5) * 12;
+    const rotateX = (y / rect.height - 0.5) * -12;
 
     gsap.to(card, {
       rotateX,
@@ -690,25 +861,25 @@ const Home = () => {
   };
 
   return (
-    <>
-      <Navbar />
-      <section className="hero-section">
-        <div className="hero-social-bar">
+    <div ref={homeRef}>
+      <section className="epm-hero-wrap epm-animate" ref={heroWrapRef}>
+        <div className="epm-social-stick">
           <a
             href="https://www.instagram.com/"
             target="_blank"
             rel="noreferrer"
             aria-label="Instagram"
-            className="hero-social-icon"
+            className="epm-social-btn"
           >
             <FaInstagram />
           </a>
+
           <a
             href="https://www.youtube.com/"
             target="_blank"
             rel="noreferrer"
             aria-label="Youtube"
-            className="hero-social-icon"
+            className="epm-social-btn"
           >
             <FaYoutube />
           </a>
@@ -718,7 +889,7 @@ const Home = () => {
             target="_blank"
             rel="noreferrer"
             aria-label="Facebook"
-            className="hero-social-icon"
+            className="epm-social-btn"
           >
             <FaFacebookF />
           </a>
@@ -728,91 +899,125 @@ const Home = () => {
             target="_blank"
             rel="noreferrer"
             aria-label="LinkedIn"
-            className="hero-social-icon"
+            className="epm-social-btn"
           >
             <FaLinkedinIn />
           </a>
         </div>
 
-        <div className="hero-bg"></div>
-        <div className="hero-overlay"></div>
-        <div className="hero-grid"></div>
+        <div className="epm-hero-bg-layer"></div>
+        <div className="epm-hero-mesh"></div>
+        <div className="epm-hero-video-shade"></div>
+        <div className="epm-hero-light epm-light-one"></div>
+        <div className="epm-hero-light epm-light-two"></div>
+        <div className="epm-hero-orb epm-orb-one"></div>
+        <div className="epm-hero-orb epm-orb-two"></div>
+        <div className="epm-hero-orb epm-orb-three"></div>
 
-        <div className="hero-shape hero-shape-left"></div>
-        <div className="hero-shape hero-shape-right"></div>
-        <div className="hero-glow hero-glow-one"></div>
-        <div className="hero-glow hero-glow-two"></div>
-
-        <div className="hero-container">
-          <div className="hero-content-card">
-            <div className="hero-image-text">
-              <h1 className="hero-title">
-                <span className="hero-title-line hero-title-tark">
-                  Excelsior
-                </span>
-                <span className="hero-title-line hero-title-accent">
-                  Pinnacle
-                </span>
-                <span className="hero-title-line hero-title-dark">
-                  Minds <small>Pvt. Ltd.</small>
-                </span>
-              </h1>
-
-              <p className="hero-tagline">
-                Because Your Wealth Deserves Excellence
-              </p>
-
-              <div className="hero-action-row">
-                <Link to="/about" className="hero-btn hero-btn-primary">
-                  ABOUT US <span>→</span>
-                </Link>
-
-                <Link to="/contact" className="hero-btn hero-btn-secondary">
-                  START CONVERSATION <span>→</span>
-                </Link>
+        <div className="epm-hero-shell">
+          <div className="epm-hero-grid">
+            <div className="epm-hero-left" ref={heroCopyRef}>
+              <div className="epm-hero-pill">
+                <span className="epm-pill-dot"></span>
+                <p>Because Your Wealth Deserves Excellence</p>
               </div>
 
-              <div className="hero-contact-strip">
-                <a
-                  href="https://epmwealth.com"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  🌐 epmwealth.com
-                </a>
-                <a href="tel:+9198999 39333">📞 +91 98999 39333</a>
+              <div className="epm-hero-copy">
+                <span className="epm-hero-kicker">
+                  NEXT-GEN WEALTH STRATEGIES
+                </span>
+
+                <h1 className="epm-hero-title" ref={heroTitleRef}>
+                  <span className="epm-title-row epm-title-dark">BUILD</span>
+                  <span className="epm-title-row epm-title-accent">GROW</span>
+                  <span className="epm-title-row epm-title-dark">PROTECT</span>
+                </h1>
+
+                <div className="epm-type-lines">
+                  <div className="epm-typed-wrap">
+                    <p className="epm-typed-line">
+                      {displayText}
+                      <span className="epm-typed-caret"></span>
+                    </p>
+                  </div>
+
+                  <p className="epm-hero-desc">
+                    At EPM we believe your wealth goes beyond money. We
+                    prioritize you, your loved ones, and your business, ensuring
+                    they remain at the heart of our every action. Our
+                    personalized approach helps you achieve your goals today and
+                    in the future.
+                  </p>
+                </div>
+
+                <div className="epm-hero-btn-wrap">
+                  <Link
+                    to="/about"
+                    className="epm-liquid-btn epm-liquid-btn-gold"
+                  >
+                    <span className="epm-btn-text">DISCOVER MORE</span>
+                    <span className="epm-btn-icon">→</span>
+                    <span className="epm-btn-liquid"></span>
+                  </Link>
+
+                  <Link
+                    to="/contact"
+                    className="epm-liquid-btn epm-liquid-btn-glass"
+                  >
+                    <span className="epm-btn-text">START A CONVERSATION</span>
+                    <span className="epm-btn-icon">→</span>
+                    <span className="epm-btn-liquid"></span>
+                  </Link>
+                </div>
+
+                <div className="epm-scroll-indicator">
+                  <span className="epm-scroll-line"></span>
+                  <span className="epm-scroll-text">Scroll to explore</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="epm-hero-right" ref={heroVisualRef}>
+              <div className="epm-floating-board epm-board-main">
+                <div className="epm-board-top">
+                  <span className="epm-board-tag">EPM WEALTH</span>
+                  <span className="epm-board-dot"></span>
+                </div>
+
+                <h3>Helping you create an enduring legacy</h3>
+                <p>
+                  Tailored wealth planning, premium insights, and a more refined
+                  financial decision-making experience.
+                </p>
+
+                <div className="epm-board-stats">
+                  <div className="epm-board-stat" ref={ref4}>
+                    <strong>{aum}+</strong>
+                    <span>AUM</span>
+                  </div>
+                  <div className="epm-board-stat" ref={ref1}>
+                    <strong>{years}+</strong>
+                    <span>Years</span>
+                  </div>
+                  <div className="epm-board-stat" ref={ref2}>
+                    <strong>{clients}+</strong>
+                    <span>Clients</span>
+                  </div>
+                  <div className="epm-board-stat" ref={ref3}>
+                    <strong>{cities}+</strong>
+                    <span>Cities</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
-      <section className="stats-section">
-        <div className="stats-container">
-          <div className="stat-item" ref={ref4}>
-            <h2>₹{aum} Cr</h2>
-            <p>AUM</p>
-          </div>
-          <div className="stat-item" ref={ref2}>
-            <h2>{clients}+</h2>
-            <p>UNIQUE CLIENTS Served</p>
-          </div>
 
-          <div className="stat-item" ref={ref1}>
-            <h2>{years}+</h2>
-            <p>Combined Team Experience</p>
-          </div>
-
-          <div className="stat-item" ref={ref3}>
-            <h2>{cities}</h2>
-            <p>Strategic Global Locations</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="solutions-section">
+      <section className="solutions-section epm-reveal-section epm-animate">
         <div className="solutions-container">
           <div className="solutions-left">
-            <span className="solutions-label">SOLUTIONS</span>
+            {/* <span className="solutions-label">SOLUTIONS</span> */}
             <h2>
               Helping you create an
               <br />
@@ -825,24 +1030,26 @@ const Home = () => {
 
           <div className="solutions-right">
             <p>
-              Wealth Advisory is beyond just building a portfolio. By serving
-              some of India's most prominent business families since 2011, we
-              have learnt the importance of taking a holistic, global yet
-              personalised approach to meeting our clients' wealth management
-              needs.
+              At EPM Wealth Management, wealth advisory goes far beyond simply
+              building a portfolio. Working closely with individuals and
+              corporates over the years, we understand that true wealth
+              management requires a holistic, personalized approach aligned with
+              each client’s unique goals.
             </p>
 
             <p>
-              Combining our in-depth knowledge and innovative technology, we
-              create a plan tailored to your complex needs. Your financial
-              consultant — backed by an experienced team — can help you navigate
-              every important decision.
+              By combining deep financial insight with modern technology, we
+              design strategies tailored to your evolving financial needs. Your
+              dedicated advisor—supported by an experienced team—guides you
+              through every important decision, ensuring clarity, confidence,
+              and long-term financial growth.
             </p>
+         
           </div>
         </div>
       </section>
 
-      <section className="decision-section">
+      <section className="decision-section epm-reveal-section epm-animate">
         <div className="decision-container">
           <div className="decision-top-row">
             <div className="decision-heading-wrap">
@@ -888,7 +1095,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="vault-section">
+      <section className="vault-section epm-reveal-section epm-animate">
         <div className="vault-container">
           <div className="vault-top-grid">
             <div className="vault-left-panel">
@@ -937,7 +1144,6 @@ const Home = () => {
                 alt={featuredArticle.title}
                 className="vault-featured-image"
               />
-
               <div className="vault-featured-overlay"></div>
 
               <div className="vault-featured-content">
@@ -953,14 +1159,18 @@ const Home = () => {
           <div className="vault-bottom-grid">
             {bottomArticles.map((item, index) => (
               <article
-                className={`vault-article-card ${index === 0 ? "first-vault-card" : ""}`}
+                className={`vault-article-card ${
+                  index === 0 ? "first-vault-card" : ""
+                }`}
                 key={item.id}
               >
                 <div className="vault-article-image-wrap">
                   <img
                     src={item.image}
                     alt={item.title}
-                    className={`vault-article-image ${index === 0 ? "fit-image" : ""}`}
+                    className={`vault-article-image ${
+                      index === 0 ? "fit-image" : ""
+                    }`}
                   />
                 </div>
 
@@ -975,10 +1185,14 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="awards-showcase-section">
+      <section className="awards-showcase-section epm-reveal-section epm-animate">
+        <div className="awards-bg-glow awards-bg-glow-left"></div>
+        <div className="awards-bg-glow awards-bg-glow-right"></div>
+        <div className="awards-grid-pattern"></div>
+
         <div className="awards-showcase-container">
           <div className="awards-showcase-top">
-            <span className="awards-mini-label">AWARDS</span>
+            <span className="awards-mini-label">AWARDS & MILESTONES</span>
 
             <h2 className="awards-main-heading">
               Journey driven by
@@ -1013,48 +1227,49 @@ const Home = () => {
           <div className="awards-year-work-section">
             <div className="awards-detail-card">
               <span className="awards-card-label">YEAR HIGHLIGHTS</span>
-              <h4>Recognition in {activeData.year}</h4>
+              <h4>What we accomplished in {activeData.year}</h4>
 
-              <div className="awards-brand-image-wrap">
-                <div className="awards-brand-image-card">
-                  <img
-                    src={activeData.brandImage}
-                    alt={activeData.brand}
-                    className="awards-brand-image"
-                  />
-                  <div className="awards-brand-image-overlay">
-                    <span>{activeData.brand}</span>
-                    <p>{activeData.title}</p>
+              <div className="awards-work-list">
+                {activeData.works.map((work, index) => (
+                  <div className="awards-work-item" key={index}>
+                    <div className="awards-work-number">
+                      {String(index + 1).padStart(2, "0")}
+                    </div>
+
+                    <div className="awards-work-content">
+                      <span>Key Achievement</span>
+                      <p>{work}</p>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
+          </div>
+        </div>
 
-            <div className="awards-gallery-section">
-              <div className="awards-gallery-head">
-                <span></span>
-                {/* <h4>Moments of Recognition</h4> */}
-              </div>
+        <div className="awards-gallery-section">
+          <div className="awards-gallery-head">
+            <span>RECOGNITION GALLERY</span>
+            <h4>Moments of Excellence</h4>
+          </div>
 
-              <div className="awards-gallery-marquee">
-                <div className="awards-horizontal-scroll-track">
-                  {duplicatedGalleryImages.map((img, index) => (
-                    <div className="awards-gallery-card" key={index}>
-                      <img src={img} alt={`Award gallery ${index + 1}`} />
-                      <div className="awards-gallery-card-overlay">
-                        <span>AWARDS</span>
-                        <p>Moments of Recognition</p>
-                      </div>
-                    </div>
-                  ))}
+          <div className="awards-gallery-marquee">
+            <div className="awards-horizontal-scroll-track">
+              {duplicatedGalleryImages.map((img, index) => (
+                <div className="awards-gallery-card" key={index}>
+                  <img src={img} alt={`Award gallery ${index + 1}`} />
+                  <div className="awards-gallery-card-overlay">
+                    <span>EPM WEALTH</span>
+                    <p>Recognition & Premium Milestones</p>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      <section className="core-values-section">
+      <section className="core-values-section epm-reveal-section epm-animate">
         <div className="core-values-container">
           <div className="core-values-top">
             <div className="core-values-top-left">
@@ -1062,12 +1277,12 @@ const Home = () => {
               <h2 className="core-values-heading">We believe in RISK</h2>
             </div>
 
-            <div className="core-values-top-right">
+            {/* <div className="core-values-top-right">
               <p>
                 Our four core values form the foundation of every client
                 relationship and every investment decision we make.
               </p>
-            </div>
+            </div> */}
           </div>
 
           <div className="core-values-grid">
@@ -1096,40 +1311,10 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="responsible-section">
-        <div className="responsible-bg-wrap">
-          <img
-            src={responsibleInvestingData.image}
-            alt="Responsible investing background"
-            className="responsible-bg-image"
-          />
-
-          <div className="responsible-bg-overlay"></div>
-          <div className="responsible-side-glow"></div>
-        </div>
-
-        <div className="responsible-container">
-          <div className="responsible-content-card">
-            <span className="responsible-label">
-              {responsibleInvestingData.label}
-            </span>
-
-            <h2 className="responsible-heading">
-              {responsibleInvestingData.heading}
-            </h2>
-
-            <p className="responsible-description">
-              {responsibleInvestingData.description}
-            </p>
-
-            <a href="#contact" className="responsible-link">
-              {responsibleInvestingData.buttonText} <span>→</span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section className="testimonials-luxury-section" ref={sectionRef}>
+      <section
+        className="testimonials-luxury-section epm-animate"
+        ref={sectionRef}
+      >
         <span className="testimonials-orb testimonials-orb-1"></span>
         <span className="testimonials-orb testimonials-orb-2"></span>
 
@@ -1150,58 +1335,61 @@ const Home = () => {
             <div className="testimonials-card-glow"></div>
             <div className="testimonials-card-noise"></div>
 
-            <div className="testimonials-quote-wrap" ref={quoteRef}>
-              <div className="testimonials-quote-layer">
-                <span className="testimonials-premium-quote">“</span>
-
-                <p className="testimonials-main-quote">
-                  {currentTestimonial.quote}
-                </p>
-              </div>
-            </div>
-
-            <div className="testimonials-client-row" ref={clientRowRef}>
+            <div className="testimonials-card-grid">
               <div
-                className="testimonials-client-image-wrap"
+                className="testimonials-client-image-side"
                 ref={imageWrapRef}
               >
-                <img
-                  src={currentTestimonial.image}
-                  alt={currentTestimonial.name}
-                  className="testimonials-client-image"
-                />
-                <span className="testimonials-image-accent">✦</span>
+                <div className="testimonials-client-image-wrap">
+                  <img
+                    src={currentTestimonial.image}
+                    alt={currentTestimonial.name}
+                    className="testimonials-client-image"
+                  />
+                  <span className="testimonials-image-accent">✦</span>
+                </div>
+
+                <div className="testimonials-client-info">
+                  <h3>{currentTestimonial.name}</h3>
+                  <p>{currentTestimonial.role}</p>
+                </div>
               </div>
 
-              <div className="testimonials-client-info">
-                <h3>{currentTestimonial.name}</h3>
-                <p>{currentTestimonial.role}</p>
+              <div className="testimonials-content-side" ref={quoteRef}>
+                <div className="testimonials-quote-wrap">
+                  <div className="testimonials-quote-layer">
+                    <span className="testimonials-premium-quote">“</span>
+                    <p className="testimonials-main-quote">
+                      {currentTestimonial.quote}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="testimonials-progress-bar">
+                  <span
+                    className="testimonials-progress-fill"
+                    key={activeTestimonial}
+                  ></span>
+                </div>
+
+                <div className="testimonials-dots-row" ref={dotsRef}>
+                  {testimonialsData.map((item, index) => (
+                    <button
+                      key={item.id}
+                      className={`testimonials-dot ${
+                        activeTestimonial === index ? "active" : ""
+                      }`}
+                      onClick={() => handleDotClick(index)}
+                      aria-label={`Show testimonial ${index + 1}`}
+                    ></button>
+                  ))}
+                </div>
               </div>
-            </div>
-
-            <div className="testimonials-progress-bar">
-              <span
-                className="testimonials-progress-fill"
-                key={activeTestimonial}
-              ></span>
-            </div>
-
-            <div className="testimonials-dots-row" ref={dotsRef}>
-              {testimonialsData.map((item, index) => (
-                <button
-                  key={item.id}
-                  className={`testimonials-dot ${
-                    activeTestimonial === index ? "active" : ""
-                  }`}
-                  onClick={() => handleDotClick(index)}
-                  aria-label={`Show testimonial ${index + 1}`}
-                ></button>
-              ))}
             </div>
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

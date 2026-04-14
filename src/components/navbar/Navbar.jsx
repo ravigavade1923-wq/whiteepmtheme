@@ -9,10 +9,11 @@ const Navbar = () => {
     <header className="navbar-wrapper">
       <nav className="navbar">
         <div className={`nav-left ${menuOpen ? "active" : ""}`}>
+          <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
           <Link to="/about" onClick={() => setMenuOpen(false)}>About</Link>
-          <Link to="#wealth" onClick={() => setMenuOpen(false)}>Solutions</Link>
-          <Link to="#management" onClick={() => setMenuOpen(false)}>Financial Literacy</Link>
-          <Link to="#vault" onClick={() => setMenuOpen(false)}>Entrepreneurial Initiative</Link>
+          <Link to="/wealth" onClick={() => setMenuOpen(false)}>Solutions</Link>
+          <Link to="/management" onClick={() => setMenuOpen(false)}>Financial Literacy</Link>
+          <Link to="/vault" onClick={() => setMenuOpen(false)}>Entrepreneurial Initiative</Link>
         </div>
 
         <div className="nav-logo">

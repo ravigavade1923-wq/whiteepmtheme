@@ -25,7 +25,7 @@
   margin-top: 10px;
   border-radius: 0 0 22px 22px;
   background:
-    linear-gradient(135deg, rgba(247, 240, 231, 0.94), rgba(239, 235, 229, 0.9)),
+    linear-gradient(135deg, rgba(247, 245, 243, 0.94), rgba(255, 252, 248, 0.9)),
     linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.04));
   border: 1px solid rgba(160, 106, 60, 0.14);
   box-shadow:

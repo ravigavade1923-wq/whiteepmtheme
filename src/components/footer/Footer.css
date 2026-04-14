@@ -1,6 +1,6 @@
 .luxury-footer {
   width: 100%;
-  background: #efe8dc;
+  background: #f6f4f2;
   position: relative;
   overflow: hidden;
   padding: 0 20px 60px;
@@ -115,7 +115,7 @@
   width: 42px;
   height: 42px;
   border: 1px solid rgba(155, 110, 71, 0.22);
-  background: rgb(132, 124, 71);
+  background: rgb(128, 125, 103);
   color: #ffffff;
   border-radius: 50%;
   display: flex;
@@ -132,7 +132,7 @@
 
 .luxury-footer-socials a:hover {
   transform: translateY(-5px) rotateX(8deg) rotateY(-8deg);
-  background: #18244a;
+  background: #1d1c13;
   color: #ffffff;
   box-shadow: 0 16px 30px rgba(24, 36, 74, 0.16);
 }
@@ -298,7 +298,7 @@
 .epm-footer {
   position: relative;
   width: 100%;
-  background: #ece3d5;
+  background: #f6f4f2;
   padding: 30px 70px 26px;
   overflow: hidden;
   z-index: 2;
