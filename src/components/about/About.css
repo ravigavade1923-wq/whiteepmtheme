@@ -1552,10 +1552,10 @@
 .advisory-council-top-right p {
   margin: 0;
   color: #7c5634;
-  font-size: 1.05rem;
-  line-height: 1.9;
-  font-weight: 500;
-  font-family: "Manrope", "Inter", sans-serif;
+  font-size: 1.15rem;
+  line-height: 1.5;
+  font-weight: 600;
+  font-family: "Cormorant Garamond", serif;
 }
 
 .advisory-council-grid {
@@ -1627,8 +1627,8 @@
 
 .advisory-avatar-wrap {
   position: relative;
-  width: 176px;
-  height: 176px;
+  width: 190px;
+  height: 190px;
   margin-bottom: 26px;
   border-radius: 50%;
   padding: 4px;
@@ -1685,11 +1685,11 @@
 .advisory-card p {
   margin: 0;
   max-width: 280px;
-  color: #7a5736;
-  font-size: 0.98rem;
+  color: #483422;
+  font-size: 1.08rem;
   line-height: 1.95;
-  font-weight: 500;
-  font-family: "Manrope", "Inter", sans-serif;
+  font-weight: 600;
+  font-family: "Cormorant Garamond", serif;
 }
 
 /* entrance animation */

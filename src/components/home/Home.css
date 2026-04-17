@@ -2349,12 +2349,12 @@ body {
   background:
     radial-gradient(
       circle at 12% 18%,
-      rgba(214, 230, 255, 0.24),
+      rgb(255, 255, 255),
       transparent 22%
     ),
     radial-gradient(
       circle at 88% 82%,
-      rgba(255, 228, 196, 0.22),
+      rgb(255, 255, 255),
       transparent 24%
     ),
     linear-gradient(180deg, #ffffff 0%, #fbf7f0 100%);
@@ -5393,3 +5393,8 @@ video {
     will-change: transform;
   }
 }
+
+
+
+
+
