@@ -8,6 +8,8 @@ const Navbar = () => {
 
   const closeMenu = () => setMenuOpen(false);
 
+  const [solutionsOpen, setSolutionsOpen] = useState(false);
+
   useEffect(() => {
     closeMenu();
   }, [location.pathname]);
@@ -31,18 +33,37 @@ const Navbar = () => {
             About
           </Link>
 
-          <Link
-            to="/solutions"
-            onClick={closeMenu}
-            className={location.pathname === "/solutions" ? "active" : ""}
-          >
-            Solutions
-          </Link>
+          <div className="nav-dropdown">
+            <span
+              className={`nav-dropdown-toggle ${
+                location.pathname.includes("/solutions") ? "active" : ""
+              }`}
+            >
+              Solutions ▾
+            </span>
+
+            <div className="nav-dropdown-menu">
+              <Link to="/solutions/wealth-creation" onClick={closeMenu}>
+                Wealth Creation
+              </Link>
+              <Link to="/solutions/wealth-protection" onClick={closeMenu}>
+                Wealth Protection
+              </Link>
+              <Link to="/solutions/wealth-management" onClick={closeMenu}>
+                Wealth Management
+              </Link>
+              <Link to="/solutions/portfolio-consultant" onClick={closeMenu}>
+                Portfolio Consultant
+              </Link>
+            </div>
+          </div>
 
           <Link
             to="/financial-literacy"
             onClick={closeMenu}
-            className={location.pathname === "/financial-literacy" ? "active" : ""}
+            className={
+              location.pathname === "/financial-literacy" ? "active" : ""
+            }
           >
             Financial Literacy
           </Link>
@@ -51,7 +72,9 @@ const Navbar = () => {
             to="/entrepreneurial-initiative"
             onClick={closeMenu}
             className={
-              location.pathname === "/entrepreneurial-initiative" ? "active" : ""
+              location.pathname === "/entrepreneurial-initiative"
+                ? "active"
+                : ""
             }
           >
             Entrepreneurial Initiative
@@ -107,18 +130,38 @@ const Navbar = () => {
             About
           </Link>
 
-          <Link
-            to="/solutions"
-            onClick={closeMenu}
-            className={location.pathname === "/solutions" ? "active" : ""}
-          >
-            Solutions
-          </Link>
+          <div className="mobile-dropdown">
+            <div
+              className="mobile-dropdown-title"
+              onClick={() => setSolutionsOpen((prev) => !prev)}
+            >
+              Solutions
+              <span className={`dropdown-arrow ${solutionsOpen ? "open" : ""}`}>
+                ▾
+              </span>
+            </div>
 
+            <div className={`mobile-submenu ${solutionsOpen ? "open" : ""}`}>
+              <Link to="/solutions/wealth-creation" onClick={closeMenu}>
+                Wealth Creation
+              </Link>
+              <Link to="/solutions/wealth-protection" onClick={closeMenu}>
+                Wealth Protection
+              </Link>
+              <Link to="/solutions/wealth-management" onClick={closeMenu}>
+                Wealth Management
+              </Link>
+              <Link to="/solutions/portfolio-consultant" onClick={closeMenu}>
+                Portfolio Consultant
+              </Link>
+            </div>
+          </div>
           <Link
             to="/financial-literacy"
             onClick={closeMenu}
-            className={location.pathname === "/financial-literacy" ? "active" : ""}
+            className={
+              location.pathname === "/financial-literacy" ? "active" : ""
+            }
           >
             Financial Literacy
           </Link>
@@ -127,7 +170,9 @@ const Navbar = () => {
             to="/entrepreneurial-initiative"
             onClick={closeMenu}
             className={
-              location.pathname === "/entrepreneurial-initiative" ? "active" : ""
+              location.pathname === "/entrepreneurial-initiative"
+                ? "active"
+                : ""
             }
           >
             Entrepreneurial Initiative

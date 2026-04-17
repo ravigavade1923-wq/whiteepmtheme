@@ -4610,7 +4610,7 @@ video {
 
   /* ── Hero ── */
   .epm-hero-wrap {
-    position: relative !important; /* disable sticky on tablet/mobile */
+    position: sticky !important; /* disable sticky on tablet/mobile */
     padding: 80px 20px 50px;
   }
 
@@ -5190,4 +5190,206 @@ video {
     border-radius: 10px;
   }
 
+}
+
+
+
+/* =====================================================
+   SECTION BLUR FIX — paste at very bottom of Home.css
+   Fixes sections stuck blurred/invisible on mobile
+===================================================== */
+
+/* ── 1. Force all overlap sections visible on mobile ── */
+@media (max-width: 992px) {
+
+  /* Disable view() timeline animations completely on mobile.
+     They conflict with GSAP and the .epm-animate/.epm-show system. */
+  .solutions-section,
+  .decision-section,
+  .vault-section,
+  .awards-showcase-section,
+  .core-values-section,
+  .testimonials-luxury-section,
+  .sip-luxury-section,
+
+  .solutions-left,
+  .solutions-right,
+  .decision-top-row,
+  .decision-grid,
+  .vault-left-panel,
+  .vault-featured-card,
+  .vault-bottom-grid,
+  .awards-showcase-top,
+  .awards-year-work-section,
+  .awards-gallery-section,
+  .core-values-top,
+  .core-values-grid,
+  .testimonials-luxury-header,
+  .testimonials-luxury-card,
+
+  .decision-card,
+  .vault-article-card,
+  .core-value-card,
+  .awards-work-item,
+  .awards-gallery-card {
+    animation: none !important;
+    animation-timeline: none !important;
+    animation-name: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    will-change: auto !important;
+    backface-visibility: visible !important;
+    transform-style: flat !important;
+  }
+
+  /* Override .epm-animate initial hidden state on mobile.
+     GSAP + IntersectionObserver handles it instead. */
+  .epm-animate {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Directional overrides — also clear these */
+  .solutions-section.epm-animate,
+  .decision-section.epm-animate,
+  .vault-section.epm-animate,
+  .awards-showcase-section.epm-animate,
+  .core-values-section.epm-animate,
+  .testimonials-luxury-section.epm-animate {
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  .epm-animate.epm-show {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+
+  /* Nested inner content — clear any inherited blur */
+  .solutions-left,
+  .solutions-right,
+  .decision-top-row,
+  .decision-grid,
+  .vault-left-panel,
+  .vault-featured-card,
+  .vault-bottom-grid,
+  .awards-showcase-top,
+  .core-values-top,
+  .core-values-grid,
+  .testimonials-luxury-header,
+  .testimonials-luxury-card {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Individual cards — stagger animation off */
+  .decision-card:nth-child(odd),
+  .decision-card:nth-child(even),
+  .vault-article-card:nth-child(1),
+  .vault-article-card:nth-child(2),
+  .vault-article-card:nth-child(3),
+  .vault-article-card:nth-child(4),
+  .core-value-card:nth-child(1),
+  .core-value-card:nth-child(2),
+  .core-value-card:nth-child(3),
+  .core-value-card:nth-child(4),
+  .awards-work-item:nth-child(odd),
+  .awards-work-item:nth-child(even),
+  .awards-gallery-card:nth-child(odd),
+  .awards-gallery-card:nth-child(even) {
+    animation-name: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+
+  /* Preserve ONLY hover/transition effects that are still useful */
+  .core-value-card {
+    transition: box-shadow 0.35s ease !important;
+    transform: none !important;
+  }
+
+  .vault-article-card {
+    transition: box-shadow 0.35s ease !important;
+    transform: none !important;
+  }
+}
+
+
+/* ── 2. Also fix on 768px and 480px just in case ── */
+@media (max-width: 768px) {
+
+  .epm-animate,
+  .epm-animate.epm-show,
+  .solutions-section,
+  .decision-section,
+  .vault-section,
+  .awards-showcase-section,
+  .core-values-section,
+  .testimonials-luxury-section,
+  .sip-luxury-section {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .epm-animate,
+  .epm-animate.epm-show {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    animation: none !important;
+  }
+
+  /* Restore core-value-card hover border */
+  .core-value-card {
+    border-bottom: 1px solid rgba(157, 120, 77, 0.18) !important;
+    border-right: none !important;
+    transform: none !important;
+  }
+
+  .core-value-card:last-child {
+    border-bottom: none !important;
+  }
+}
+
+
+
+
+
+
+
+/* awards gallery mobile speed faster */
+@media (max-width: 768px) {
+  .awards-horizontal-scroll-track {
+    animation: awardsTrackMove 5s linear infinite !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .awards-horizontal-scroll-track {
+    animation: awardsTrackMove 7s linear infinite !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .awards-gallery-marquee {
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .awards-horizontal-scroll-track {
+    will-change: transform;
+  }
 }
