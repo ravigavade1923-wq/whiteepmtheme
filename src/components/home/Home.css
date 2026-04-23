@@ -286,9 +286,7 @@ body {
   letter-spacing: -2px;
   color: #ffffff;
   font-family: "Cormorant Garamond", serif;
-  text-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.449),
-    0 26px 56px rgba(5, 8, 19, 0.864);
+  
   transform: translateZ(80px);
   animation: epmTitleDrift 5.5s ease-in-out infinite;
 }
@@ -965,9 +963,7 @@ body {
 .epm-hero-line-three {
   font-size: clamp(2.9rem, 5.6vw, 3.8rem);
   color: #000000;
-  text-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.226),
-    0 18px 45px rgba(5, 8, 19, 0.17);
+  text-shadow: none; /* shadow remove */
 }
 
 .epm-hero-line-two {
