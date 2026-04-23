@@ -4,11 +4,22 @@ import "./Navbar.css";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [solutionsOpen, setSolutionsOpen] = useState(false);
+  const [literacyOpen, setLiteracyOpen] = useState(false);
+
+  // desktop dropdown states
+  const [desktopSolutionsOpen, setDesktopSolutionsOpen] = useState(false);
+  const [desktopLiteracyOpen, setDesktopLiteracyOpen] = useState(false);
+
   const location = useLocation();
 
-  const closeMenu = () => setMenuOpen(false);
-
-  const [solutionsOpen, setSolutionsOpen] = useState(false);
+  const closeMenu = () => {
+    setMenuOpen(false);
+    setSolutionsOpen(false);
+    setLiteracyOpen(false);
+    setDesktopSolutionsOpen(false);
+    setDesktopLiteracyOpen(false);
+  };
 
   useEffect(() => {
     closeMenu();
@@ -33,13 +44,18 @@ const Navbar = () => {
             About
           </Link>
 
-          <div className="nav-dropdown">
+          {/* DESKTOP SOLUTIONS DROPDOWN */}
+          <div
+            className={`nav-dropdown ${desktopSolutionsOpen ? "open" : ""}`}
+            onMouseEnter={() => setDesktopSolutionsOpen(true)}
+            onMouseLeave={() => setDesktopSolutionsOpen(false)}
+          >
             <span
               className={`nav-dropdown-toggle ${
                 location.pathname.includes("/solutions") ? "active" : ""
               }`}
             >
-              Solutions ▾
+              Solutions <span className="desktop-arrow">▾</span>
             </span>
 
             <div className="nav-dropdown-menu">
@@ -58,15 +74,29 @@ const Navbar = () => {
             </div>
           </div>
 
-          <Link
-            to="/financial-literacy"
-            onClick={closeMenu}
-            className={
-              location.pathname === "/financial-literacy" ? "active" : ""
-            }
+          {/* DESKTOP FINANCIAL LITERACY DROPDOWN */}
+          <div
+            className={`nav-dropdown ${desktopLiteracyOpen ? "open" : ""}`}
+            onMouseEnter={() => setDesktopLiteracyOpen(true)}
+            onMouseLeave={() => setDesktopLiteracyOpen(false)}
           >
-            Financial Literacy
-          </Link>
+            <span
+              className={`nav-dropdown-toggle ${
+                location.pathname.includes("/financial-literacy") ||
+                location.pathname.includes("/financialliteracy")
+                  ? "active"
+                  : ""
+              }`}
+            >
+              Financial Literacy <span className="desktop-arrow">▾</span>
+            </span>
+
+            <div className="nav-dropdown-menu">
+              <Link to="/financialliteracy/seminar-webinar" onClick={closeMenu}>
+                Seminar & Webinar
+              </Link>
+            </div>
+          </div>
 
           <Link
             to="/entrepreneurial-initiative"
@@ -157,19 +187,21 @@ const Navbar = () => {
             </div>
           </div>
 
-          
           <div className="mobile-dropdown">
             <div
               className="mobile-dropdown-title"
-              onClick={() => setSolutionsOpen((prev) => !prev)}
+              onClick={() => setLiteracyOpen((prev) => !prev)}
             >
               Financial Literacy
-              <span className={`dropdown-arrow ${solutionsOpen ? "open" : ""}`}>
+              <span className={`dropdown-arrow ${literacyOpen ? "open" : ""}`}>
                 ▾
               </span>
             </div>
 
-            <div className={`mobile-submenu ${solutionsOpen ? "open" : ""}`}>
+            <div className={`mobile-submenu ${literacyOpen ? "open" : ""}`}>
+              <Link to="/financial-literacy" onClick={closeMenu}>
+                Overview
+              </Link>
               <Link to="/financialliteracy/seminar-webinar" onClick={closeMenu}>
                 Seminar & Webinar
               </Link>
